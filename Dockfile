@@ -10,8 +10,5 @@ RUN a2enmod rewrite
 # Copy your script into the default Apache directory
 COPY ai-handler.php /var/www/html/ai-handler.php
 
-# Explicitly ensure Apache listens on the environment port variable provided by Render
-RUN sed -i 's/Listen 80/Listen ${PORT}/g' /etc/apache2/ports.conf
-RUN sed -i 's/<VirtualHost \*:80>/<VirtualHost \*:${PORT}>/g' /etc/apache2/sites-available/000-default.conf
-
+# Tell Apache to listen to port 80 internally
 EXPOSE 80
