@@ -1,159 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
-    <link rel="icon" href="Webrex_only.png">
-    <link rel="stylesheet" href="styles.css">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WEBREX</title>
+    <link rel="icon" href="Webrex_only.png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
         @import url('https://fonts.googleapis.com/css?family=Pacifico');
-        @import url('https://fonts.googleapis.com/css?family=canela');
 
         body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: black;
-      color: white;
-      overflow-y: hidden;
-    }
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+            overflow-y: hidden;
+        }
 
-    .menu-toggle {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      width: 35px;
-      height: 25px;
-      z-index: 1001;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
+        .menu-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 35px;
+            height: 25px;
+            z-index: 1001;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
 
-    .menu-toggle span {
-      display: block;
-      height: 4px;
-      background-color: white;
-      border-radius: 2px;
-      transition: all 0.2s ease;
-    }
+        .menu-toggle span {
+            display: block;
+            height: 4px;
+            background-color: white;
+            border-radius: 2px;
+            transition: all 0.2s ease;
+        }
 
-    .menu-toggle.active span:nth-child(1) {
-      transform: translateY(10px) rotate(45deg);
-    }
+        .menu-toggle.active span:nth-child(1) {
+            transform: translateY(10px) rotate(45deg);
+        }
 
-    .menu-toggle.active span:nth-child(2) {
-      opacity: 0;
-    }
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
 
-    .menu-toggle.active span:nth-child(3) {
-      transform: translateY(-10px) rotate(-45deg);
-    }
+        .menu-toggle.active span:nth-child(3) {
+            transform: translateY(-10px) rotate(-4(-45deg));
+        }
 
-    .side-menu {
-      position: fixed;
-      top: 0;
-      left: -250px;
-      width: 250px;
-      height: 100%;
-      background-color: #111;
-      padding-top: 80px;
-      transition: left 0.25s ease;
-      z-index: 1000;
-      overflow-y: auto;
-    }
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #111;
+            padding-top: 80px;
+            transition: left 0.25s ease;
+            z-index: 1000;
+            overflow-y: auto;
+        }
 
-    .side-menu.show {
-      left: 0;
-    }
+        .side-menu.show {
+            left: 0;
+        }
 
-    .side-menu ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
+        .side-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-    .side-menu ul li {
-      opacity: 0;
-      transform: translateX(-20px);
-      padding: 15px 20px;
-      border-bottom: 1px solid #333;
-      color: white;
-      cursor: pointer;
-    }
+        .side-menu ul li {
+            opacity: 0;
+            transform: translateX(-20px);
+            padding: 15px 20px;
+            border-bottom: 1px solid #333;
+            color: white;
+            cursor: pointer;
+        }
 
-    .side-menu li.animate {
-      animation: slideIn 0.8s forwards;
-    }
+        .side-menu li.animate {
+            animation: slideIn 0.8s forwards;
+        }
 
-    @keyframes slideIn {
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
 
-    .side-menu li:hover {
-      background-color: #333;
-    }
+        .side-menu li:hover {
+            background-color: #333;
+        }
 
-    .side-menu a {
-      color: inherit;
-      text-decoration: none;
-      display: block;
-    }
+        .side-menu a {
+            color: inherit;
+            text-decoration: none;
+            display: block;
+        }
 
-    #overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100vh;
-      width: 100vw;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 999;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease;
-    }
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
 
-    #overlay.show {
-      opacity: 1;
-      pointer-events: all;
-    }
+        #overlay.show {
+            opacity: 1;
+            pointer-events: all;
+        }
 
-    .content {
-      padding: 100px 20px;
-      text-align: center;
-    }
+        .content {
+            text-align: center;
+            padding-top: 150px;
+            font-family: 'Creepster', cursive;
+            font-size: 3rem;
+        }
 
-    .content h1 {
-      font-family: 'Creepster', cursive;
-      font-size: 4rem;
-      margin-bottom: 20px;
-    }
-
-    .content p {
-      font-size: 1.2rem;
-      max-width: 600px;
-      margin: auto;
-    }
-
-    @media (max-width: 600px) {
-      .content h1 {
-        font-size: 2.5rem;
-      }
-
-      .content p {
-        font-size: 1rem;
-      }
-
-      .side-menu {
-        width: 80%;
-      }
-    }
         .diwaloween {
             height: 17.8cm;
             width: 40cm;
@@ -161,12 +138,11 @@
             bottom: 0.8cm;
             left: -0.2cm;
         } 
+
         #search {
             width: 300px;
             height: 25px;
             padding: 5px;
-            border-right: 20px ;
-            border-left:  20px;
             border: none;
             outline: none;
             transition: width 0.4s ease-in-out;
@@ -175,14 +151,16 @@
             position: relative;
             bottom: 8.5cm;
             left: 14cm;
-    }
-    #search:hover{
-  box-shadow: 0 0 8px lightblue;
-}
+        }
 
-    #search::placeholder{
-      padding: 5px;
-    }
+        #search:hover {
+            box-shadow: 0 0 8px lightblue;
+        }
+
+        #search::placeholder {
+            padding: 5px;
+        }
+
         .chatbox {
             display: none;
             flex-direction: column;
@@ -227,12 +205,14 @@
             background-color: #555;
             color: white;
             border: none;
+            cursor: pointer;
         }
 
         .message {
             margin: 10px 0;
             padding: 10px;
             border-radius: 5px;
+            font-size: 0.95rem;
         }
 
         .user {
@@ -243,392 +223,332 @@
             background-color: #666;
         }  
         
-        .FEEDBACK{
-            text-decoration: none;
-        }
-        .design{
+        .design {
             font-family: 'Pacifico', cursive;
         }
-        .searchqu{
+
+        .searchqu {
             text-align: center;
-             color: #FFFFFF;
-              margin-bottom: 10px; 
-              font-family: Georgia, 'Times New Roman', Times, serif; 
-              position: relative;
-               bottom: 10cm;
-               transform: scale(2);
+            color: #FFFFFF;
+            margin-bottom: 10px; 
+            font-family: Georgia, 'Times New Roman', Times, serif; 
+            position: relative;
+            bottom: 10cm;
+            transform: scale(2);
         }
-        .all-quart{
+
+        .all-quart {
             font-size: x-large;
             position: relative;
             bottom: 4cm;
         }
-        .end-nav{
-            background-color: black;
-            width: 36.6cm;
-            height: 9cm;
+
+        .search-icon {
+            transform: scale(0.1);
             position: relative;
-            bottom: 6cm;
-            right: 1cm;
-            z-index: 10;
+            bottom: 179mm;
+            left: 18cm;
         }
-        .end-par{
-           font-size: xx-large;
-            position: relative;
-            top: -8cm;
+
+        .account-wrapper {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1100;
         }
-        .search-icon{
-          transform: scale(0.1);
-          position: relative;
-          bottom: 179mm;
-          left: 18cm;
+
+        .account-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid black;
+            background-color: #000;
+            cursor: pointer;
+            padding: 0;
+            overflow: hidden;
+            transition: transform 0.2s;
         }
-    .account-wrapper {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 1100;
-    }
 
-    .account-btn {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      border: 2px solid black;
-      background-color: #000;
-      cursor: pointer;
-      padding: 0;
-      overflow: hidden;
-      transition: transform 0.2s;
-    }
+        .account-btn:hover {
+            transform: scale(1.05);
+        }
 
-    .account-btn:hover {
-      transform: scale(1.05);
-    }
+        .account-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
 
-    .account-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-    }
+        .dropdown {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background: #222;
+            border: 1px solid #444;
+            border-radius: 10px;
+            display: none;
+            flex-direction: column;
+            min-width: 160px;
+            animation: fadeSlideDown 0.3s ease forwards;
+        }
 
-    .dropdown {
-      position: absolute;
-      top: 60px;
-      right: 0;
-      background: #222;
-      border: 1px solid #444;
-      border-radius: 10px;
-      display: none;
-      flex-direction: column;
-      min-width: 160px;
-      animation: fadeSlideDown 0.3s ease forwards;
-    }
+        .dropdown a {
+            padding: 12px 18px;
+            text-decoration: none;
+            color: white;
+            border-bottom: 1px solid #333;
+            transition: background 0.2s ease;
+            font-size: 15px;
+        }
 
-    .dropdown a {
-      padding: 12px 18px;
-      text-decoration: none;
-      color: white;
-      border-bottom: 1px solid #333;
-      transition: background 0.2s ease;
-      font-size: 15px;
-    }
+        .dropdown a:last-child {
+            border-bottom: none;
+        }
 
-    .dropdown a:last-child {
-      border-bottom: none;
-    }
+        .dropdown a:hover {
+            background-color: #333;
+            border-radius: 1mm;
+        }
 
-    .dropdown a:hover {
-      background-color: #333;
-      border-radius: 1mm;
-    }
+        .dropdown.show {
+            display: flex;
+        }
 
-    .dropdown.show {
-      display: flex;
-    }
+        #toggle-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1;
+        }
 
-    @keyframes fadeSlideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-8px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .content {
-      text-align: center;
-      padding-top: 150px;
-      font-family: 'Creepster', cursive;
-      font-size: 3rem;
-    }
+        @keyframes fadeSlideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body class="BODY">
+
     <div class="menu-toggle" id="menu-toggle">
-      <span></span>
-      <span></span>
-      <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
     </div>
   
     <nav class="side-menu" id="side-menu">
-      <ul>
-        <li><a href="#">HOME</a></li>
-        <li><a href="website-news.html">WEBSITE NEWS</a></li>
-        <li><a href="https://razin09-2.github.io/untitled-1/">GAME</a></li>
-        <li><a href="about-us.html">ABOUT US</a></li>
-        <li><a href="http://localhost/pppp/feedbackq.html">FEEDBACK</a></li>
-        <li><a href="#">CONTACT US</a></li>
-      </ul>
+        <ul>
+            <li><a href="#">HOME</a></li>
+            <li><a href="website-news.html">WEBSITE NEWS</a></li>
+            <li><a href="https://razin09-2.github.io/untitled-1/">GAME</a></li>
+            <li><a href="about-us.html">ABOUT US</a></li>
+            <li><a href="http://localhost/pppp/feedbackq.html">FEEDBACK</a></li>
+            <li><a href="#">CONTACT US</a></li>
+        </ul>
     </nav>
   
     <div id="overlay"></div>
-        <img src="dehnghdfghb (1).jpg" class="diwaloween">
-        <input type="text" id="search" placeholder="Search for top 10...">
+    <img src="dehnghdfghb (1).jpg" class="diwaloween" alt="Background Banner">
+    
+    <input type="text" id="search" placeholder="Search WEBREX AI...">
+    
     <button id="toggle-btn">🎃</button>
 
     <div class="chatbox" id="chatbox">
         <div class="chatbox-header">
-            <h3>Chatbot</h3>
-            <button id="close-btn">&times;</button>
+            <h3>WEBREX Assistant</h3>
+            <button id="close-btn" style="background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">&times;</button>
         </div>
         <div class="chatbox-body" id="chatbox-body">
             <div id="messages"></div>
         </div>
-        <input type="text" id="user-input" placeholder="Type a message...">
-        <button id="send-btn">Send</button>
+        <div style="display: flex;">
+            <input type="text" id="user-input" placeholder="Type a message...">
+            <button id="send-btn">Send</button>
+        </div>
     </div>
+
     <div class="all-quart">
-    <h2 class="searchqu">WEBREX</h2></div>
-    <img src="search.png" class="search-icon">
-    <div class="account-wrapper">
-      <button class="account-btn" onclick="toggleDropdown()">
-        <img src="account.png" class="account-img" alt="Account">
-      </button>
-      <div class="dropdown" id="accountDropdown">
-        <a href="http://localhost/web/signup.html">Sign Up</a>
-        <a href="http://localhost/web/login.html">Log In</a>
-      </div>
+        <h2 class="searchqu">WEBREX</h2>
     </div>
+    
+    <img src="search.png" class="search-icon" alt="Search Icon">
+    
+    <div class="account-wrapper">
+        <button class="account-btn" onclick="toggleDropdown()">
+            <img src="account.png" class="account-img" alt="Account">
+        </button>
+        <div class="dropdown" id="accountDropdown">
+            <a href="http://localhost/web/signup.html">Sign Up</a>
+            <a href="http://localhost/web/login.html">Log In</a>
+        </div>
+    </div>
+
     <script>
-        const sites = {
-          'top 10 social media': 'https://razin09-codee.github.io/webrex/0social%20media.html',
-'social media': 'https://razin09-codee.github.io/webrex/0social%20media.html',
-'top 10 ai': 'https://razin09-codee.github.io/webrex/ai.html',
-'ai': 'https://razin09-codee.github.io/webrex/ai.html',
-'top 10 coding platform': 'https://razin09-codee.github.io/webrex/coding%20platform.html',
-'top 10 coding app': 'https://razin09-codee.github.io/webrex/coding%20platform.html',
-'top 10 coding': 'https://razin09-codee.github.io/webrex/coding%20platform.html',
-'coding': 'https://razin09-codee.github.io/webrex/coding%20platform.html',
-'top 10 cringest website': 'https://razin09-codee.github.io/webrex/cringe.html',
-'top 10 cringe website': 'https://razin09-codee.github.io/webrex/cringe.html',
-'top 10 cringe': 'https://razin09-codee.github.io/webrex/cringe.html',
-'cringe': 'https://razin09-codee.github.io/webrex/cringe.html',
-'top 10 entertainment app': 'https://razin09-codee.github.io/webrex/entertanate.html',
-'top 10 entertainment platform': 'https://razin09-codee.github.io/webrex/entertanate.html',
-'top 10 entertainment': 'https://razin09-codee.github.io/webrex/entertanate.html',
-'entertainment': 'https://razin09-codee.github.io/webrex/entertanate.html',
-'fun': 'https://razin09-codee.github.io/webrex/entertanate.html',
-'top 10 online game': 'https://razin09-codee.github.io/webrex/online%20game.html',
-'top 10 online web game': 'https://razin09-codee.github.io/webrex/online%20game.html',
-'top 10 online game launcher': 'https://razin09-codee.github.io/webrex/online%20game.html',
-'online game launcher': 'https://razin09-codee.github.io/webrex/online%20game.html',
-'top 10 pranking app': 'https://razin09-codee.github.io/webrex/pranking%20app.html',
-'top 10 prank app': 'https://razin09-codee.github.io/webrex/pranking%20app.html',
-'pranking app': 'https://razin09-codee.github.io/webrex/pranking%20app.html',
-'prank': 'https://razin09-codee.github.io/webrex/pranking%20app.html',
-'prank app': 'https://razin09-codee.github.io/webrex/pranking%20app.html',
-'top 10 search engine': 'https://razin09-codee.github.io/webrex/seach%20engines%20infowebsite%20info.html',
-'top 10 search engines': 'https://razin09-codee.github.io/webrex/seach%20engines%20infowebsite%20info.html',
-'search engine': 'https://razin09-codee.github.io/webrex/seach%20engines%20infowebsite%20info.html',
-'search engines': 'https://razin09-codee.github.io/webrex/seach%20engines%20infowebsite%20info.html',
-'search': 'https://razin09-codee.github.io/webrex/seach%20engines%20infowebsite%20info.html',
-'top 10 online shopping': 'https://razin09-codee.github.io/webrex/top%2010%20online%20shopping.html',
-'top 10 online shoppen': 'https://razin09-codee.github.io/webrex/top%2010%20online%20shopping.html',
-'top 10 shopping online': 'https://razin09-codee.github.io/webrex/top%2010%20online%20shopping.html',
-'top 10 shoppen online': 'https://razin09-codee.github.io/webrex/top%2010%20online%20shopping.html',
-'online shopping': 'https://razin09-codee.github.io/webrex/top%2010%20online%20shopping.html',
-'online shoppen': 'https://razin09-codee.github.io/webrex/top%2010%20online%20shopping.html',
-'shopping online': 'https://razin09-codee.github.io/webrex/top%2010%20online%20shopping.html',
-'shoppen online': 'https://razin09-codee.github.io/webrex/top%2010%20online%20shopping.html',
-'top 10 played game': 'https://razin09-codee.github.io/webrex/top%2010%20played%20game%2024.html',
-'top 10 play game': 'https://razin09-codee.github.io/webrex/top%2010%20played%20game%2024.html',
-'played game': 'https://razin09-codee.github.io/webrex/top%2010%20played%20game%2024.html',
-'play game': 'https://razin09-codee.github.io/webrex/top%2010%20played%20game%2024.html',
-'game': 'https://razin09-codee.github.io/webrex/top%2010%20played%20game%2024.html',
-'top 10 visited website': 'https://razin09-codee.github.io/webrex/top%2010%20visited%20website.html',
-'top 10 visit website': 'https://razin09-codee.github.io/webrex/top%2010%20visited%20website.html',
-'top 10 website visited': 'https://razin09-codee.github.io/webrex/top%2010%20visited%20website.html',
-'top 10 website visit': 'https://razin09-codee.github.io/webrex/top%2010%20visited%20website.html',
-'website visited': 'https://razin09-codee.github.io/webrex/top%2010%20visited%20website.html',
-'website visit': 'https://razin09-codee.github.io/webrex/top%2010%20visited%20website.html',
-'top 10 stocks': 'https://razin09-codee.github.io/webrex/stocks.html',
-'stocks': 'https://razin09-codee.github.io/webrex/stocks.html',
-'stock': 'https://razin09-codee.github.io/webrex/stocks.html',
-'top 10 dating website': 'https://razin09-codee.github.io/webrex/dating%20website.html',
-'dating': 'https://razin09-codee.github.io/webrex/dating%20website.html',
-'girl': 'https://razin09-codee.github.io/webrex/dating%20website.html',
-'boy': 'https://razin09-codee.github.io/webrex/dating%20website.html',
-'top 10 pc health checker website': 'https://razin09-codee.github.io/webrex/DEVICE%20HEALTH%20CHECKING%20WEBSITES/DEVICE%20HEALTH%20CHECKING%20WEBSITE.html',
-'pc health checker website': 'https://razin09-codee.github.io/webrex/DEVICE%20HEALTH%20CHECKING%20WEBSITES/DEVICE%20HEALTH%20CHECKING%20WEBSITE.html',
-'pc': 'https://razin09-codee.github.io/webrex/DEVICE%20HEALTH%20CHECKING%20WEBSITES/DEVICE%20HEALTH%20CHECKING%20WEBSITE.html',
-'computer': 'https://razin09-codee.github.io/webrex/DEVICE%20HEALTH%20CHECKING%20WEBSITES/DEVICE%20HEALTH%20CHECKING%20WEBSITE.html',
-'top 10 education website website': 'https://razin09-codee.github.io/webrex/education%20website.html',
-'education': 'https://razin09-codee.github.io/webrex/education%20website.html',
-'study': 'https://razin09-codee.github.io/webrex/education%20website.html',
-'top 10 music website': 'https://razin09-codee.github.io/webrex/music%20website.html',
-'music': 'https://razin09-codee.github.io/webrex/music%20website.html',
-'song': 'https://razin09-codee.github.io/webrex/music%20website.html',
-'top 10 useless website': 'https://razin09-codee.github.io/webrex/useless%20website.html',
-'useless website': 'https://razin09-codee.github.io/webrex/useless%20website.html',
-'useless': 'https://razin09-codee.github.io/webrex/useless%20website.html',
-'top 10 news website': 'https://razin09-codee.github.io/webrex/news%20website.html',
-'news': 'https://razin09-codee.github.io/webrex/news%20website.html',
-'news website': 'https://razin09-codee.github.io/webrex/news%20website.html',
-'top 10 banking website': 'https://razin09-codee.github.io/webrex/BANKING%20WEBSITES/Banking%20Websites.html',
-'bank': 'https://razin09-codee.github.io/webrex/BANKING%20WEBSITES/Banking%20Websites.html',
-'banking website': 'https://razin09-codee.github.io/webrex/BANKING%20WEBSITES/Banking%20Websites.html',
-'book': 'https://razin09-codee.github.io/webrex/BOOK%20READING%20WEBSITES/BOOK%20READING%20WEBSITES.html',
-'top 10 book reading website': 'https://razin09-codee.github.io/webrex/BOOK%20READING%20WEBSITES/BOOK%20READING%20WEBSITES.html',
-'horror': 'https://razin09-codee.github.io/webrex/HORROR%20WEBSITES/HORROR%20WEBSITES.html',
-'top 10 horror website': 'https://razin09-codee.github.io/webrex/HORROR%20WEBSITES/HORROR%20WEBSITES.html',
-'ott': 'https://razin09-codee.github.io/webrex/OTT,%20ANIME%20WEBSITES/OTT,%20ANIME%20WATCHING%20WEBSITES.html',
-'top 10 ott website': 'https://razin09-codee.github.io/webrex/OTT,%20ANIME%20WEBSITES/OTT,%20ANIME%20WATCHING%20WEBSITES.html',
-
-        };
-
+        // AI Dynamic Search Logic
         document.getElementById('search').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
-                const query = this.value.toLowerCase();
-                if (sites[query]) {
-                    window.location.href = sites[query];
-                } else {
-                    alert('Site not found!');
-                }
+                const query = this.value.trim();
+                if (query === '') return;
+
+                // Open the chatbox window to show background compilation status
+                const chatbox = document.getElementById('chatbox');
+                chatbox.style.display = 'flex';
+                
+                addMessage(`Searching and building section for: "${query}"...`, 'user');
+                this.value = ''; 
+
+                // Send layout generation instruction to the backend processor
+                fetch('chat.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'message=' + encodeURIComponent(`Generate a Top 10 webpage response array for: ${query}`)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.html_payload) {
+                        addMessage("✨ Section rendered successfully! Opening page...", 'bot');
+                        
+                        // Inject the dynamically compiled website structure directly into a clean view panel
+                        const newWindow = window.open();
+                        newWindow.document.open();
+                        newWindow.document.write(data.html_payload);
+                        newWindow.document.close();
+                    } else {
+                        addMessage(data.reply || "Could not generate a custom grid presentation for this keyword.", 'bot');
+                    }
+                })
+                .catch(() => {
+                    addMessage("⚠️ Failed to parse dynamic layout sequence from WEBREX engine.", 'bot');
+                });
             }
         });
 
+        // Chat UI Component Triggers
         document.getElementById('toggle-btn').addEventListener('click', function () {
-    const chatbox = document.getElementById('chatbox');
-    chatbox.style.display = chatbox.style.display === 'flex' ? 'none' : 'flex';
-});
+            const chatbox = document.getElementById('chatbox');
+            chatbox.style.display = chatbox.style.display === 'flex' ? 'none' : 'flex';
+        });
 
-document.getElementById('send-btn').addEventListener('click', sendMessage);
-document.getElementById('user-input').addEventListener('keypress', function (event) {
-    if (event.key === 'Enter') {
-        sendMessage();
-    }
-});
+        document.getElementById('send-btn').addEventListener('click', sendMessage);
+        document.getElementById('user-input').addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
 
-document.getElementById('close-btn').addEventListener('click', function () {
-    document.getElementById('chatbox').style.display = 'none';
-});
+        document.getElementById('close-btn').addEventListener('click', function () {
+            document.getElementById('chatbox').style.display = 'none';
+        });
 
-function sendMessage() {
-    const inputField = document.getElementById('user-input');
-    const messageText = inputField.value;
+        function sendMessage() {
+            const inputField = document.getElementById('user-input');
+            const messageText = inputField.value.trim();
 
-    if (messageText.trim() === '') return;
+            if (messageText === '') return;
 
-    addMessage(messageText, 'user');
-    inputField.value = '';
+            addMessage(messageText, 'user');
+            inputField.value = '';
 
-    fetch('chat.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'message=' + encodeURIComponent(messageText)
-    })
-    .then(response => response.json())
-    .then(data => {
-        addMessage(data.reply || "Sorry, I didn't understand that.", 'bot');
-    })
-    .catch(() => {
-        addMessage("⚠️ Failed to connect to AI.", 'bot');
-    });
-}
+            fetch('chat.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'message=' + encodeURIComponent(messageText)
+            })
+            .then(response => response.json())
+            .then(data => {
+                addMessage(data.reply || "Sorry, I couldn't process that entry.", 'bot');
+            })
+            .catch(() => {
+                addMessage("⚠️ Sync interruption: Failed to contact AI node.", 'bot');
+            });
+        }
 
-function addMessage(text, sender) {
-    const messagesContainer = document.getElementById('messages');
-    const messageDiv = document.createElement('div');
-    messageDiv.classList.add('message', sender);
-    messageDiv.textContent = text;
-    messagesContainer.appendChild(messageDiv);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
-    </script>
-    <script>
+        function addMessage(text, sender) {
+            const messagesContainer = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', sender);
+            messageDiv.textContent = text;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Dropdown Navigation Elements
+        function toggleDropdown() {
+            document.getElementById('accountDropdown').classList.toggle('show');
+        }
+
+        window.addEventListener('click', function (e) {
+            const btn = document.querySelector('.account-btn');
+            const dropdown = document.getElementById('accountDropdown');
+            if (btn && !btn.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // Responsive Sliding Drawer System
         const menuBtn = document.getElementById('menu-toggle');
         const sideMenu = document.getElementById('side-menu');
         const overlay = document.getElementById('overlay');
         const menuItems = document.querySelectorAll('.side-menu li');
     
         function animateItems() {
-          menuItems.forEach((item, i) => {
-            item.classList.remove('animate'); // Reset
-            void item.offsetWidth; // Force reflow
-            setTimeout(() => {
-              item.classList.add('animate');
-            }, i * 100); // stagger delay
-          });
+            menuItems.forEach((item, i) => {
+                item.classList.remove('animate'); 
+                void item.offsetWidth; 
+                setTimeout(() => {
+                    item.classList.add('animate');
+                }, i * 100); 
+            });
         }
     
         function openMenu() {
-          sideMenu.classList.add('show');
-          menuBtn.classList.add('active');
-          overlay.classList.add('show');
-          animateItems();
+            sideMenu.classList.add('show');
+            menuBtn.classList.add('active');
+            overlay.classList.add('show');
+            animateItems();
         }
     
         function closeMenu() {
-          sideMenu.classList.remove('show');
-          menuBtn.classList.remove('active');
-          overlay.classList.remove('show');
-          menuItems.forEach(item => item.classList.remove('animate'));
+            sideMenu.classList.remove('show');
+            menuBtn.classList.remove('active');
+            overlay.classList.remove('show');
+            menuItems.forEach(item => item.classList.remove('animate'));
         }
     
         menuBtn.addEventListener('click', () => {
-          sideMenu.classList.contains('show') ? closeMenu() : openMenu();
+            sideMenu.classList.contains('show') ? closeMenu() : openMenu();
         });
     
         overlay.addEventListener('click', closeMenu);
     
         document.querySelectorAll('.side-menu a, .side-menu li').forEach(item => {
-          item.addEventListener('click', () => {
-            closeMenu();
-          });
+            item.addEventListener('click', closeMenu);
         });
     
         let touchStartX = 0;
         let touchEndX = 0;
     
         document.addEventListener('touchstart', (e) => {
-          touchStartX = e.changedTouches[0].screenX;
+            touchStartX = e.changedTouches[0].screenX;
         });
     
         document.addEventListener('touchend', (e) => {
-          touchEndX = e.changedTouches[0].screenX;
-          const swipeDistance = touchEndX - touchStartX;
-          if (swipeDistance > 50) openMenu();
-          else if (swipeDistance < -50) closeMenu();
+            touchEndX = e.changedTouches[0].screenX;
+            const swipeDistance = touchEndX - touchStartX;
+            if (swipeDistance > 50) openMenu();
+            else if (swipeDistance < -50) closeMenu();
         });
-      </script>    
-  <script>
-    function toggleDropdown() {
-      const dropdown = document.getElementById('accountDropdown');
-      dropdown.classList.toggle('show');
-    }
-
-    // Auto-close dropdown when clicking outside
-    window.addEventListener('click', function (e) {
-      const btn = document.querySelector('.account-btn');
-      const dropdown = document.getElementById('accountDropdown');
-      if (!btn.contains(e.target) && !dropdown.contains(e.target)) {
-        dropdown.classList.remove('show');
-      }
-    });
-  </script>
+    </script>
 </body>
 </html>
