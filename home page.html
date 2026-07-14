@@ -3,552 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WEBREX</title>
-    <link rel="icon" href="Webrex_only.png">
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
-    
+    <title>WEBREX - AI Search Engine Portal</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- AOS (Animate on Scroll) CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
-        @import url('https://fonts.googleapis.com/css?family=Pacifico');
-
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: black;
-            color: white;
-            overflow-y: hidden;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            min-height: 100vh;
         }
-
-        .menu-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            width: 35px;
-            height: 25px;
-            z-index: 1001;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-
-        .menu-toggle span {
-            display: block;
-            height: 4px;
-            background-color: white;
-            border-radius: 2px;
-            transition: all 0.2s ease;
-        }
-
-        .menu-toggle.active span:nth-child(1) {
-            transform: translateY(10px) rotate(45deg);
-        }
-
-        .menu-toggle.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .menu-toggle.active span:nth-child(3) {
-            transform: translateY(-10px) rotate(-4(-45deg));
-        }
-
-        .side-menu {
-            position: fixed;
-            top: 0;
-            left: -250px;
-            width: 250px;
-            height: 100%;
-            background-color: #111;
-            padding-top: 80px;
-            transition: left 0.25s ease;
-            z-index: 1000;
-            overflow-y: auto;
-        }
-
-        .side-menu.show {
-            left: 0;
-        }
-
-        .side-menu ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .side-menu ul li {
-            opacity: 0;
-            transform: translateX(-20px);
-            padding: 15px 20px;
-            border-bottom: 1px solid #333;
-            color: white;
-            cursor: pointer;
-        }
-
-        .side-menu li.animate {
-            animation: slideIn 0.8s forwards;
-        }
-
-        @keyframes slideIn {
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .side-menu li:hover {
-            background-color: #333;
-        }
-
-        .side-menu a {
-            color: inherit;
-            text-decoration: none;
-            display: block;
-        }
-
-        #overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            width: 100vw;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s ease;
-        }
-
-        #overlay.show {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .content {
-            text-align: center;
-            padding-top: 150px;
-            font-family: 'Creepster', cursive;
-            font-size: 3rem;
-        }
-
-        .diwaloween {
-            height: 17.8cm;
-            width: 40cm;
-            position: relative;
-            bottom: 0.8cm;
-            left: -0.2cm;
-        } 
-
-        #search {
-            width: 300px;
-            height: 25px;
-            padding: 5px;
-            border: none;
-            outline: none;
-            transition: width 0.4s ease-in-out;
-            background-color: black;
-            color: gray;
-            position: relative;
-            bottom: 8.5cm;
-            left: 14cm;
-        }
-
-        #search:hover {
-            box-shadow: 0 0 8px lightblue;
-        }
-
-        #search::placeholder {
-            padding: 5px;
-        }
-
-        .chatbox {
-            display: none;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 300px;
-            height: 400px;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #222;
-            color: white;
-            border-radius: 10px;
-            border: 1px solid #444;
-            z-index: 2;
-        }
-
-        .chatbox-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            background-color: #333;
-            border-bottom: 1px solid #444;
-        }
-
-        .chatbox-body {
-            flex-grow: 1;
-            padding: 10px;
-            overflow-y: auto;
-        }
-
-        #user-input {
-            width: calc(100% - 20px);
-            padding: 10px;
-            border: none;
-            background-color: #333;
-            color: white;
-        }
-
-        #send-btn {
-            padding: 10px;
-            background-color: #555;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        .message {
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 0.95rem;
-        }
-
-        .user {
-            background-color: #444;
-        }
-
-        .bot {
-            background-color: #666;
-        }  
-        
-        .design {
-            font-family: 'Pacifico', cursive;
-        }
-
-        .searchqu {
-            text-align: center;
-            color: #FFFFFF;
-            margin-bottom: 10px; 
-            font-family: Georgia, 'Times New Roman', Times, serif; 
-            position: relative;
-            bottom: 10cm;
-            transform: scale(2);
-        }
-
-        .all-quart {
-            font-size: x-large;
-            position: relative;
-            bottom: 4cm;
-        }
-
-        .search-icon {
-            transform: scale(0.1);
-            position: relative;
-            bottom: 179mm;
-            left: 18cm;
-        }
-
-        .account-wrapper {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1100;
-        }
-
-        .account-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: 2px solid black;
-            background-color: #000;
-            cursor: pointer;
-            padding: 0;
+        .chat-container {
+            max-height: 0;
             overflow: hidden;
-            transition: transform 0.2s;
+            transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
         }
-
-        .account-btn:hover {
-            transform: scale(1.05);
-        }
-
-        .account-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-
-        .dropdown {
-            position: absolute;
-            top: 60px;
-            right: 0;
-            background: #222;
-            border: 1px solid #444;
-            border-radius: 10px;
-            display: none;
-            flex-direction: column;
-            min-width: 160px;
-            animation: fadeSlideDown 0.3s ease forwards;
-        }
-
-        .dropdown a {
-            padding: 12px 18px;
-            text-decoration: none;
-            color: white;
-            border-bottom: 1px solid #333;
-            transition: background 0.2s ease;
-            font-size: 15px;
-        }
-
-        .dropdown a:last-child {
-            border-bottom: none;
-        }
-
-        .dropdown a:hover {
-            background-color: #333;
-            border-radius: 1mm;
-        }
-
-        .dropdown.show {
-            display: flex;
-        }
-
-        #toggle-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            font-size: 2rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            z-index: 1;
-        }
-
-        @keyframes fadeSlideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .chat-container.open {
+            max-height: 1000px;
+            transition: max-height 1s ease-in-out;
         }
     </style>
 </head>
-<body class="BODY">
+<body class="flex flex-col items-center justify-center p-4">
 
-    <div class="menu-toggle" id="menu-toggle">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-  
-    <nav class="side-menu" id="side-menu">
-        <ul>
-            <li><a href="#">HOME</a></li>
-            <li><a href="website-news.html">WEBSITE NEWS</a></li>
-            <li><a href="https://razin09-2.github.io/untitled-1/">GAME</a></li>
-            <li><a href="about-us.html">ABOUT US</a></li>
-            <li><a href="http://localhost/pppp/feedbackq.html">FEEDBACK</a></li>
-            <li><a href="#">CONTACT US</a></li>
-        </ul>
-    </nav>
-  
-    <div id="overlay"></div>
-    <img src="dehnghdfghb (1).jpg" class="diwaloween" alt="Background Banner">
-    
-    <input type="text" id="search" placeholder="Search WEBREX AI...">
-    
-    <button id="toggle-btn">🎃</button>
+    <!-- MAIN PORTAL CARD -->
+    <div class="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-8 max-w-2xl w-full text-center" data-aos="zoom-in">
+        <h1 class="text-5xl font-black text-gray-800 mb-2 tracking-tight">WEBREX</h1>
+        <p class="text-gray-600 mb-8 font-medium">The Infinite AI-Driven Web Space</p>
 
-    <div class="chatbox" id="chatbox">
-        <div class="chatbox-header">
-            <h3>WEBREX Assistant</h3>
-            <button id="close-btn" style="background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">&times;</button>
-        </div>
-        <div class="chatbox-body" id="chatbox-body">
-            <div id="messages"></div>
-        </div>
-        <div style="display: flex;">
-            <input type="text" id="user-input" placeholder="Type a message...">
-            <button id="send-btn">Send</button>
+        <!-- SEARCH BAR -->
+        <div class="relative w-full max-w-md mx-auto mb-6">
+            <input type="text" id="search-input" placeholder="Search a Top 10 category..." 
+                   class="w-full px-6 py-4 rounded-full border border-gray-300 focus:outline-none focus:ring-4 focus:ring-blue-300 text-lg shadow-sm transition-all">
+            <button id="search-btn" class="absolute right-3 top-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2 rounded-full transition-colors">
+                Search
+            </button>
         </div>
     </div>
 
-    <div class="all-quart">
-        <h2 class="searchqu">WEBREX</h2>
-    </div>z
-    
-    <img src="search.png" class="search-icon" alt="Search Icon">
-    
-    <div class="account-wrapper">
-        <button class="account-btn" onclick="toggleDropdown()">
-            <img src="account.png" class="account-img" alt="Account">
-        </button>
-        <div class="dropdown" id="accountDropdown">
-            <a href="http://localhost/web/signup.html">Sign Up</a>
-            <a href="http://localhost/web/login.html">Log In</a>
+    <!-- CHAT INTERACTIVE FEEDBACK PANEL -->
+    <div id="chat-panel" class="chat-container max-w-2xl w-full mt-6 bg-white rounded-2xl shadow-2xl">
+        <div class="p-4 bg-gray-800 text-white rounded-t-2xl font-bold flex justify-between items-center">
+            <span>WEBREX Core Engine</span>
+            <span class="h-3 w-3 bg-green-500 rounded-full animate-ping"></span>
+        </div>
+        <div id="chat-messages" class="p-6 max-h-96 overflow-y-auto space-y-4 text-left text-gray-700">
+            <!-- Messages will render dynamically here -->
         </div>
     </div>
 
+    <!-- SCRIPTS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // AI Dynamic Search Logic
-        document.getElementById('search').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                const query = this.value.trim();
-                if (query === '') return;
+        // Initialize Scroll Animations
+        AOS.init();
 
-                // Open the chatbox window to show background compilation status
-                const chatbox = document.getElementById('chatbox');
-                chatbox.style.display = 'flex';
-                
-                addMessage(`Searching and building section for: "${query}"...`, 'user');
-                this.value = ''; 
+        // CONFIGURATION: Replace this safely with your actual Google Gemini API Key
+        const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY_HERE";
+        const GEMINI_MODEL = "gemini-2.5-flash"; // Using 2.5-flash for speed and structural generation
 
-                // Send layout generation instruction to the backend processor
-                fetch('ai-handler.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: 'message=' + encodeURIComponent(`Generate a Top 10 webpage response array for: ${query}`)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.html_payload) {
-                        addMessage("✨ Section rendered successfully! Opening page...", 'bot');
-                        
-                        // Inject the dynamically compiled website structure directly into a clean view panel
-                        const newWindow = window.open();
-                        newWindow.document.open();
-                        newWindow.document.write(data.html_payload);
-                        newWindow.document.close();
-                    } else {
-                        addMessage(data.reply || "Could not generate a custom grid presentation for this keyword.", 'bot');
-                    }
-                })
-                .catch(() => {
-                    addMessage("⚠️ Failed to parse dynamic layout sequence from WEBREX engine.", 'bot');
-                });
-            }
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const chatPanel = document.getElementById('chat-panel');
+        const chatMessages = document.getElementById('chat-messages');
+
+        // Trigger action on click or keypress
+        searchBtn.addEventListener('click', handleSearch);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleSearch();
         });
-
-        // Chat UI Component Triggers
-        document.getElementById('toggle-btn').addEventListener('click', function () {
-            const chatbox = document.getElementById('chatbox');
-            chatbox.style.display = chatbox.style.display === 'flex' ? 'none' : 'flex';
-        });
-
-        document.getElementById('send-btn').addEventListener('click', sendMessage);
-        document.getElementById('user-input').addEventListener('keypress', function (event) {
-            if (event.key === 'Enter') {
-                sendMessage();
-            }
-        });
-
-        document.getElementById('close-btn').addEventListener('click', function () {
-            document.getElementById('chatbox').style.display = 'none';
-        });
-
-        function sendMessage() {
-            const inputField = document.getElementById('user-input');
-            const messageText = inputField.value.trim();
-
-            if (messageText === '') return;
-
-            addMessage(messageText, 'user');
-            inputField.value = '';
-
-            fetch('ai-handler.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: 'message=' + encodeURIComponent(messageText)
-            })
-            .then(response => response.json())
-            .then(data => {
-                addMessage(data.reply || "Sorry, I couldn't process that entry.", 'bot');
-            })
-            .catch(() => {
-                addMessage("⚠️ Sync interruption: Failed to contact AI node.", 'bot');
-            });
-        }
 
         function addMessage(text, sender) {
-            const messagesContainer = document.getElementById('messages');
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message', sender);
-            messageDiv.textContent = text;
-            messagesContainer.appendChild(messageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `p-3.5 rounded-xl max-w-[85%] ${
+                sender === 'user' 
+                ? 'bg-blue-100 text-blue-900 ml-auto text-right' 
+                : 'bg-gray-100 text-gray-800'
+            }`;
+            msgDiv.textContent = text;
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        // Dropdown Navigation Elements
-        function toggleDropdown() {
-            document.getElementById('accountDropdown').classList.toggle('show');
-        }
+        async function handleSearch() {
+            const query = searchInput.value.trim();
+            if (!query) return;
 
-        window.addEventListener('click', function (e) {
-            const btn = document.querySelector('.account-btn');
-            const dropdown = document.getElementById('accountDropdown');
-            if (btn && !btn.contains(e.target) && !dropdown.contains(e.target)) {
-                dropdown.classList.remove('show');
-            }
-        });
+            // Clear old chat logs and show panel
+            chatMessages.innerHTML = '';
+            searchInput.value = '';
+            chatPanel.classList.add('open');
 
-        // Responsive Sliding Drawer System
-        const menuBtn = document.getElementById('menu-toggle');
-        const sideMenu = document.getElementById('side-menu');
-        const overlay = document.getElementById('overlay');
-        const menuItems = document.querySelectorAll('.side-menu li');
-    
-        function animateItems() {
-            menuItems.forEach((item, i) => {
-                item.classList.remove('animate'); 
-                void item.offsetWidth; 
+            addMessage(`Searching for: "${query}"`, 'user');
+            addMessage(`Building custom dynamic page grid for "${query}"... please wait.`, 'system');
+
+            try {
+                // System instructions telling Gemini exactly how to design the page output
+                const systemPrompt = `You are a professional frontend web generator for the platform WEBREX. 
+The user searched for the topic: '${query}'. 
+Generate a beautiful, modern 'Top 10' responsive grid page strictly in HTML and inline CSS.
+
+Follow these design choices precisely:
+- Use a background gradient animation: linear-gradient(to right, #f1f3f6, #dbe9f4) with 400% size.
+- Title must be large, centered, and clean.
+- Create a main CSS grid container with 10 custom item cards matching the topic details.
+- Include smooth hover lift translation animations on the cards.
+- Incorporate AOS script configurations dynamically inside the header and footer blocks.
+- Every grid item anchor element must use an information href targeting back to a details route (e.g., href='info.php?item=ItemName').
+
+CRITICAL: Output ONLY the functional standalone code wrapped within a raw HTML document starting with <!DOCTYPE html>. Do not include markdown wraps like \`\`\`html or \`\`\`.`;
+
+                // Set up the API call direct to Google Gemini
+                const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+                
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{ text: systemPrompt + "\n\nBuild the page now." }]
+                        }]
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Gemini API connection error (Status ${response.status})`);
+                }
+
+                const data = await response.json();
+                
+                // Parse the text block from the returned API payload structure
+                let htmlPayload = data.candidates[0].content.parts[0].text;
+
+                // Strip any markdown backticks if Gemini accidentally includes them
+                htmlPayload = htmlPayload.replace(/^```html\s*|```\s*$/gi, '').trim();
+
+                addMessage("Page generation complete! Opening new workspace tab...", "system");
+
+                // Open the new generated code cleanly in a blank tab
                 setTimeout(() => {
-                    item.classList.add('animate');
-                }, i * 100); 
-            });
+                    const newWindow = window.open();
+                    if (newWindow) {
+                        newWindow.document.write(htmlPayload);
+                        newWindow.document.close(); // Tells the browser parsing is finished
+                    } else {
+                        addMessage("Popup blocked! Please allow popups for this site to view your generated page.", "system");
+                    }
+                }, 1000);
+
+            } catch (error) {
+                console.error("Error communicating with Gemini:", error);
+                addMessage(`Engine error: ${error.message}. Please check your API key configuration.`, "system");
+            }
         }
-    
-        function openMenu() {
-            sideMenu.classList.add('show');
-            menuBtn.classList.add('active');
-            overlay.classList.add('show');
-            animateItems();
-        }
-    
-        function closeMenu() {
-            sideMenu.classList.remove('show');
-            menuBtn.classList.remove('active');
-            overlay.classList.remove('show');
-            menuItems.forEach(item => item.classList.remove('animate'));
-        }
-    
-        menuBtn.addEventListener('click', () => {
-            sideMenu.classList.contains('show') ? closeMenu() : openMenu();
-        });
-    
-        overlay.addEventListener('click', closeMenu);
-    
-        document.querySelectorAll('.side-menu a, .side-menu li').forEach(item => {
-            item.addEventListener('click', closeMenu);
-        });
-    
-        let touchStartX = 0;
-        let touchEndX = 0;
-    
-        document.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-    
-        document.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            const swipeDistance = touchEndX - touchStartX;
-            if (swipeDistance > 50) openMenu();
-            else if (swipeDistance < -50) closeMenu();
-        });
     </script>
 </body>
 </html>
