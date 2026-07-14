@@ -409,7 +409,7 @@
                 this.value = ''; 
 
                 // Send layout generation instruction to the backend processor
-                fetch('chat.php', {
+                fetch('ai-handler.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: 'message=' + encodeURIComponent(`Generate a Top 10 webpage response array for: ${query}`)
@@ -460,7 +460,7 @@
             addMessage(messageText, 'user');
             inputField.value = '';
 
-            fetch('chat.php', {
+            fetch('ai-handler.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'message=' + encodeURIComponent(messageText)
