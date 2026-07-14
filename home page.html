@@ -50,7 +50,7 @@
         }
 
         .menu-toggle.active span:nth-child(3) {
-            transform: translateY(-10px) rotate(-4(-45deg));
+            transform: translateY(-10px) rotate(-45deg);
         }
 
         .side-menu {
@@ -393,65 +393,185 @@
             <a href="http://localhost/web/login.html">Log In</a>
         </div>
     </div>
+
     <script>
-        // ⚠️ BACKEND ROUTING ADDRESS
-        // Replace this URL string with your exact Render app web service address once deployed
-        const BACKEND_URL = "https://webrex-1.onrender.com/ai-handler.php";
+        // CONFIGURATION: Replace with your actual Google Gemini API Key
+        const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY_HERE";
+        const GEMINI_MODEL = "gemini-2.5-flash";
 
-        const searchInput = document.getElementById('search-input');
-        const searchBtn = document.getElementById('search-btn');
-        const statusPanel = document.getElementById('status-panel');
-        const statusMessages = document.getElementById('status-messages');
-
-        searchBtn.addEventListener('click', handleSearch);
-        searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSearch(); });
-
-        function logStatus(text, isError = false) {
-            const p = document.createElement('p');
-            p.className = isError ? 'text-red-400' : 'text-cyan-400';
-            p.textContent = `> ${text}`;
-            statusMessages.appendChild(p);
-            statusMessages.scrollTop = statusMessages.scrollHeight;
+        // Helper function to hit Gemini API directly from Frontend
+        async function fetchFromGemini(promptText) {
+            const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: promptText }] }]
+                })
+            });
+            if (!response.ok) throw new Error(`API returned status code: ${response.status}`);
+            const data = await response.json();
+            return data.candidates[0].content.parts[0].text;
         }
 
-        async function handleSearch() {
-            const query = searchInput.value.trim();
-            if (!query) return;
+        // AI Dynamic Search Logic via Search Input Element
+        document.getElementById('search').addEventListener('keypress', async function(e) {
+            if (e.key === 'Enter') {
+                const query = this.value.trim();
+                if (query === '') return;
 
-            statusMessages.innerHTML = '';
-            statusPanel.classList.remove('hidden');
-            logStatus(`Initiating compilation array for: "${query}"`);
-
-            try {
-                // Post data to the remote Render PHP node
-                const response = await fetch(BACKEND_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: 'message=' + encodeURIComponent(`Generate a Top 10 webpage response array for: ${query}`)
-                });
-
-                if (!response.ok) throw new Error(`Server returned response cluster status ${response.status}`);
-
-                const data = await response.json();
+                const chatbox = document.getElementById('chatbox');
+                chatbox.style.display = 'flex';
                 
-                if (data.html_payload) {
-                    logStatus("Success! Executing dynamic document viewport build...");
+                addMessage(`Searching and building section for: "${query}"...`, 'user');
+                this.value = ''; 
+
+                const systemPrompt = `You are a professional frontend web generator for the platform WEBREX. 
+The user searched for the topic: '${query}'. 
+Generate a beautiful, modern 'Top 10' responsive grid page strictly in HTML and inline CSS.
+
+Follow these design choices precisely:
+- Use a background gradient animation: linear-gradient(to right, #f1f3f6, #dbe9f4) with 400% size.
+- Title must be large, centered, and clean.
+- Create a main CSS grid container with 10 custom item cards matching the topic details.
+- Include smooth hover lift translation animations on the cards.
+- Incorporate AOS script configurations dynamically inside the header and footer blocks.
+- Every grid item anchor element must use an information href targeting back to a details route (e.g., href='info.php?item=ItemName').
+
+CRITICAL: Output ONLY the functional standalone code wrapped within a raw HTML document starting with <!DOCTYPE html>. Do not include markdown wraps like \`\`\`html or \`\`\`.`;
+
+                try {
+                    let htmlPayload = await fetchFromGemini(systemPrompt + "\n\nBuild the page now.");
+                    htmlPayload = htmlPayload.replace(/^```html\s*|```\s*$/gi, '').trim();
+
+                    addMessage("✨ Section rendered successfully! Opening page...", 'bot');
                     
                     const newWindow = window.open();
                     if (newWindow) {
                         newWindow.document.open();
-                        newWindow.document.write(data.html_payload);
+                        newWindow.document.write(htmlPayload);
                         newWindow.document.close();
                     } else {
-                        logStatus("Popup blocked! Enable permissions to view generation layout.", true);
+                        addMessage("⚠️ Popup blocked! Please allow popups to open the dynamic view panel.", 'bot');
                     }
-                } else {
-                    logStatus(data.reply || "Engine failed to process valid grid sequence.", true);
+                } catch (error) {
+                    addMessage("⚠️ Failed to parse dynamic layout sequence from WEBREX engine.", 'bot');
+                    console.error(error);
                 }
-            } catch (err) {
-                logStatus(`Sync Failure: ${err.message}`, true);
+            }
+        });
+
+        // Chat UI Component Triggers
+        document.getElementById('toggle-btn').addEventListener('click', function () {
+            const chatbox = document.getElementById('chatbox');
+            chatbox.style.display = chatbox.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        document.getElementById('send-btn').addEventListener('click', sendMessage);
+        document.getElementById('user-input').addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        document.getElementById('close-btn').addEventListener('click', function () {
+            document.getElementById('chatbox').style.display = 'none';
+        });
+
+        async function sendMessage() {
+            const inputField = document.getElementById('user-input');
+            const messageText = inputField.value.trim();
+
+            if (messageText === '') return;
+
+            addMessage(messageText, 'user');
+            inputField.value = '';
+
+            try {
+                const chatbotPrompt = `You are the friendly AI assistant for the WEBREX portal. Answer briefly: ${messageText}`;
+                const reply = await fetchFromGemini(chatbotPrompt);
+                addMessage(reply, 'bot');
+            } catch (error) {
+                addMessage("⚠️ Sync interruption: Failed to contact AI node.", 'bot');
+                console.error(error);
             }
         }
+
+        function addMessage(text, sender) {
+            const messagesContainer = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', sender);
+            messageDiv.textContent = text;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Dropdown Navigation Elements
+        function toggleDropdown() {
+            document.getElementById('accountDropdown').classList.toggle('show');
+        }
+
+        window.addEventListener('click', function (e) {
+            const btn = document.querySelector('.account-btn');
+            const dropdown = document.getElementById('accountDropdown');
+            if (btn && !btn.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // Responsive Sliding Drawer System
+        const menuBtn = document.getElementById('menu-toggle');
+        const sideMenu = document.getElementById('side-menu');
+        const overlay = document.getElementById('overlay');
+        const menuItems = document.querySelectorAll('.side-menu li');
+    
+        function animateItems() {
+            menuItems.forEach((item, i) => {
+                item.classList.remove('animate'); 
+                void item.offsetWidth; 
+                setTimeout(() => {
+                    item.classList.add('animate');
+                }, i * 100); 
+            });
+        }
+    
+        function openMenu() {
+            sideMenu.classList.add('show');
+            menuBtn.classList.add('active');
+            overlay.classList.add('show');
+            animateItems();
+        }
+    
+        function closeMenu() {
+            sideMenu.classList.remove('show');
+            menuBtn.classList.remove('active');
+            overlay.classList.remove('show');
+            menuItems.forEach(item => item.classList.remove('animate'));
+        }
+    
+        menuBtn.addEventListener('click', () => {
+            sideMenu.classList.contains('show') ? closeMenu() : openMenu();
+        });
+    
+        overlay.addEventListener('click', closeMenu);
+    
+        document.querySelectorAll('.side-menu a, .side-menu li').forEach(item => {
+            item.addEventListener('click', closeMenu);
+        });
+    
+        let touchStartX = 0;
+        let touchEndX = 0;
+    
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+    
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const swipeDistance = touchEndX - touchStartX;
+            if (swipeDistance > 50) openMenu();
+            else if (swipeDistance < -50) closeMenu();
+        });
     </script>
 </body>
 </html>
